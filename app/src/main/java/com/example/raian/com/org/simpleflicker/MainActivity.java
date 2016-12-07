@@ -1,10 +1,13 @@
 package com.example.raian.com.org.simpleflicker;
 
+import android.os.Build;
+import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
 
 import com.example.raian.com.org.simpleflicker.adapter.RVFlickerAdapter;
 import com.example.raian.com.org.simpleflicker.component.DaggerMainComponent;
@@ -73,9 +76,16 @@ public class MainActivity extends AppCompatActivity {
                         Log.d(TAG, "onError::" + e.getMessage());
                     }
 
+                    @RequiresApi(api = Build.VERSION_CODES.M)
                     @Override
                     public void onNext(Result result) {
                         Log.d(TAG, "onNext::" + result);
+                        mFlickerRecyclerView.setOnScrollChangeListener(new View.OnScrollChangeListener() {
+                            @Override
+                            public void onScrollChange(View view, int i, int i1, int i2, int i3) {
+                                Log.d(TAG, i + ":" + i1 + ":" + i2 + ":" + i3);
+                            }
+                        });
                         adapter = new RVFlickerAdapter(MainActivity.this, result.getPhotos().getPhoto());
                         mFlickerRecyclerView.setAdapter(adapter);
 
